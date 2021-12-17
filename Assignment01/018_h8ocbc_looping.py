@@ -1,6 +1,7 @@
 ## Nama			: Gilang Trisetya Indrawan
 ## Kode Peserta	: FSDO002ONL018
-## Github Url	:
+## Github Url	: 1. Sesi1 https://github.com/ginwa123/GIL-OCBC-NISP-PYTHON-REACT/tree/main/Session01
+##				  2. Sesi2 https://github.com/ginwa123/GIL-OCBC-NISP-PYTHON-REACT/blob/main/Session02/conditional_iterator.py
 
 numbers = [
 	951, 402, 984, 651, 360, 69, 408, 319, 601, 485, 980, 507,

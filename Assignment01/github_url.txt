@@ -1,0 +1,2 @@
+1. Sesi1 https://github.com/ginwa123/GIL-OCBC-NISP-PYTHON-REACT/tree/main/Session01
+2. Sesi2 https://github.com/ginwa123/GIL-OCBC-NISP-PYTHON-REACT/blob/main/Session02/conditional_iterator.py
