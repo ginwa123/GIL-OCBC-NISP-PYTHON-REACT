@@ -6,7 +6,7 @@
   - Session 2
     - Learn conditional and looping
 - Day 2
-  - Session 1
+  - Session 3
     - Learn python function, anonymous function, arguments, docstring, returns statement
-  - Session 2
+  - Session 4
     - Learn python files and exception
