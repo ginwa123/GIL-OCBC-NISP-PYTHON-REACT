@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    {% if users is not none %} {% for user in users %}
+
+    <div>{{ user.name }}</div>
+    <div>{{ user.alamat }}</div>
+
+    {% endfor %} {% endif %}
+    <div>{% if user is not none %} {{ user }} {% endif %}</div>
+    {{ sort }}
+  </body>
+</html>
