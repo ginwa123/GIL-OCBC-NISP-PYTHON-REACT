@@ -15,3 +15,8 @@
     - Learn python OOP
   - Session 6
     - Learn advanced python generator, decorator, etc
+- Day 4
+  - Session 7
+    - Learn flask route, templates, static
+  - Session 8
+    - Learn integrates flask with swagger to create api
