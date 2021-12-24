@@ -31,7 +31,7 @@ def home():
 	localhost:5000/
 	:return:        the rendered template "home.html"
 	"""
-	return render_template("index.html")
+	return render_template("home.html")
 
 if __name__ == '__main__':
 	app.run()
