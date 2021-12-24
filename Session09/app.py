@@ -2,6 +2,7 @@ import os
 
 import connexion
 from dotenv import load_dotenv
+from flask import render_template
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,6 +24,14 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 connexion_app.add_api('people_swagger.yml')
+@app.route("/")
+def home():
+	"""
+	This function just responds to the browser URL
+	localhost:5000/
+	:return:        the rendered template "home.html"
+	"""
+	return render_template("index.html")
 
 if __name__ == '__main__':
 	app.run()

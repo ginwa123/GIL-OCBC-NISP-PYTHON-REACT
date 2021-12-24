@@ -33,7 +33,7 @@ def home():
 	localhost:5000/
 	:return:        the rendered template "home.html"
 	"""
-	return render_template("home.html")
+	return render_template("index.html")
 
 
 # db.create_all()

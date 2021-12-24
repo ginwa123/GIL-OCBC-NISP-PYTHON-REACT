@@ -29,10 +29,6 @@ def read_all():
 
 	:return:        json string of list of people
 	"""
-	from models import (
-		Person,
-		PersonSchema,
-	)
 	people = Person.query \
 		.order_by(Person.lname) \
 		.all()
