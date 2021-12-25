@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Application Home Page</title>
+    <script src="static/js/vue.min.js"></script>
+    <script src="static/js/axios.min.js"></script>
+    <link rel="stylesheet" href="static/css/home.css" />
+  </head>
+  <body>
+    <div class="container" id="app">
+      <h1 class="banner">People Demo Application</h1>
+      <div class="section editor">
+        <label for="fname"
+          >Person id
+          <input v-model="forms.person_id" id="person_id" type="text" />
+        </label>
+        <label for="fname"
+          >First Name
+          <input v-model="forms.fname" id="fname" type="text" />
+        </label>
+        <br />
+        <label for="forms.lname"
+          >Last Name
+          <input v-model="forms.lname" id="lname" type="text" />
+        </label>
+        <br />
+        <button v-on:click="createPeople()" id="create">Create</button>
+        <button v-on:click="updatePeople()" id="update">Update</button>
+        <button v-on:click="deletePeople()" id="delete">Delete</button>
+        <button v-on:click="clearForm()" id="reset">Reset</button>
+      </div>
+      <div class="people">
+        <table>
+          <caption>
+            People
+          </caption>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Update Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="people in peoples">
+              <td>[[ people.person_id]]</td>
+              <td>[[ people.fname]]</td>
+              <td>[[ people.lname]]</td>
+              <td>[[ people.timestamp]]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="error"></div>
+    </div>
+  </body>
+  <script>
+    var app = new Vue({
+      delimiters: ["[[", "]]"],
+      el: "#app",
+      data: {
+        message: "Hello Vue!",
+        peoples: [],
+        forms: {
+          person_id: "",
+          fname: "",
+          lname: "",
+        },
+      },
+      methods: {
+        clearForm() {
+          const vm = this;
+          vm.forms.fname = "";
+          vm.forms.lname = "";
+          vm.forms.person_id = "";
+        },
+        readAll() {
+          const vm = this;
+          axios
+            .get("/api/people")
+            .then(function (response) {
+              // handle success
+              console.log(response);
+              vm.peoples = response.data;
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error.response);
+              alert(JSON.stringify(error.response.data.detail));
+            })
+            .then(function () {
+              // always executed
+            });
+        },
+        createPeople() {
+          const vm = this;
+          if (vm.forms.fname === "" || vm.forms.lname === "") {
+            alert("invalid input first name or last name");
+            return;
+          }
+          axios
+            .post("/api/people", {
+              fname: vm.forms.fname,
+              lname: vm.forms.lname,
+            })
+            .then(function (response) {
+              // handle success
+              console.log(response);
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error.response);
+              alert(JSON.stringify(error.response.data.detail));
+            })
+            .then(function () {
+              vm.clearForm();
+              vm.readAll();
+            });
+        },
+        updatePeople() {
+          const vm = this;
+          if (
+            vm.forms.fname === "" ||
+            vm.forms.lname === "" ||
+            vm.forms.person_id === ""
+          ) {
+            alert("invalid input first name or last name or person Id");
+            return;
+          }
+          axios
+            .put("/api/people/" + vm.forms.person_id, vm.forms)
+            .then(function (response) {
+              // handle success
+              console.log(response);
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error.response);
+              alert(JSON.stringify(error.response.data.detail));
+            })
+            .then(function () {
+              vm.clearForm();
+              vm.readAll();
+            });
+        },
+        deletePeople() {
+          const vm = this;
+          if (vm.forms.person_id === "") {
+            alert("invalid input person_id");
+            return;
+          }
+          axios
+            .delete("/api/people/" + vm.forms.person_id)
+            .then(function (response) {
+              // handle success
+              console.log(response);
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error.response);
+              alert(JSON.stringify(error.response.data.detail));
+            })
+            .then(function () {
+              vm.clearForm();
+              vm.readAll();
+            });
+        },
+      },
+      created() {
+        this.readAll();
+      },
+    });
+  </script>
+</html>
