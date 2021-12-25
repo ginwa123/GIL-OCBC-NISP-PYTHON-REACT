@@ -19,4 +19,13 @@
   - Session 7
     - Learn flask route, templates, static
   - Session 8
-    - Learn integrates flask with swagger to create api
+    - Learn to integrated flask with swagger
+- Day 5
+  - Session 9
+    - Learn to integrated flask with sqlalchemy
+  - Session 10
+    - Practice Session
+- Day 6
+  - Session 11
+    - Learn to deploy flask app to heroku platform
+    - Learn unit testing in python
