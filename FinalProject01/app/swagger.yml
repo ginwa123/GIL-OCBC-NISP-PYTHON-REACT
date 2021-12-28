@@ -317,6 +317,7 @@ components:
           description: uid of the director
         department:
           type: string
+          default: Directing
           description: department of the director
     Movie:
       type: object
