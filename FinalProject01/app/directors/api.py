@@ -12,6 +12,7 @@ def read_all(page=1, per_page=10, include_movies=True, search_keyword=""):
 	search_keyword = "%{}%".format(search_keyword)
 	director: Pagination = Director.query \
 		.filter(Director.name.like(search_keyword)) \
+		.order_by(Director.name.asc()) \
 		.paginate(page=page, per_page=per_page)
 
 	context = {
