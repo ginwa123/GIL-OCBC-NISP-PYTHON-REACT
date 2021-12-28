@@ -4,10 +4,10 @@ from app import db, ma
 
 
 class Director(db.Model):
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
 	name = db.Column(db.Text, nullable=False)
 	gender = db.Column(db.Integer, nullable=False)
-	uid = db.Column(db.Integer, nullable=False, unique=True)
+	uid = db.Column(db.BigInteger, nullable=False, unique=True)
 	department = db.Column(db.Text, default="Directing")
 
 	movies = db.relationship(
