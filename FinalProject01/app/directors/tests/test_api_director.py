@@ -3,14 +3,15 @@ import unittest
 
 import pytest
 
-from app import create_app
+
+from run import app
 
 
 class MyTestCase(unittest.TestCase):
 
 	def setUp(self) -> None:
 		super().setUp()
-		self.app = create_app()
+		self.app = app
 		self.client = self.app.test_client()
 
 	@pytest.mark.order(1)

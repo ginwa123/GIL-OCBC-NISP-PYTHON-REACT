@@ -3,14 +3,15 @@ import unittest
 import pytest
 from flask_sqlalchemy import Pagination
 
-from app import create_app, db
+from app import db
 from app.directors.models import Director, DirectorMoviesSchema
+from run import app
 
 
 class MyTestCase(unittest.TestCase):
 	def setUp(self) -> None:
 		super().setUp()
-		self.app = create_app()
+		self.app = app
 		self.db = db
 		self.director = {
 			"name": "gilang tri",

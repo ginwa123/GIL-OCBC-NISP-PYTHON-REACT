@@ -1,18 +1,27 @@
 import sys
 
 from flask import request, make_response
+from flask_sqlalchemy import Pagination
 from werkzeug.exceptions import abort
 from app import db
 from app.directors.models import Director, DirectorSchema
 from app.movies.models import MovieSchema, Movie
 
 
-def read_all():
-	movie = Movie.query \
-		.limit(10) \
-		.all()
-	movie_schema = MovieSchema(many=True)
-	return movie_schema.dump(movie)
+def read_all(page=1, per_page=10,  search=""):
+	search = "%{}%".format(search)
+	movie: Pagination = Movie.query.filter(Movie.title.like(search)) \
+		.paginate(page=page, per_page=per_page)
+
+	context = {
+		"has_next": movie.has_next,
+		"has_prev": movie.has_prev,
+		"page": movie.page,
+		"per_page": movie.per_page,
+		"total": movie.total,
+		"items": MovieSchema().dump(movie.items, many=True)
+	}
+	return context, 200
 
 
 def read_one(id):
