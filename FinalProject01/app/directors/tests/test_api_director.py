@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
 	@pytest.mark.order(3)
 	def test_get_page_per_page_search(self):
 		response = self.client.get(
-			"/api/directors?page=1&per_page=10&include_movies=true&order_type=asc&search=Éric",
+			"/api/directors?page=1&per_page=10&include_movies=true&order_type=asc&search_keyword=Éric",
 			content_type='application/json')
 		data = json.loads(response.get_data(as_text=True))
 		print(data)
@@ -42,6 +42,7 @@ class MyTestCase(unittest.TestCase):
 		for item in data["items"]:
 			if item["name"] == "Éric Tessier":
 				isFound = True
+				break
 		self.assertTrue(isFound)
 
 

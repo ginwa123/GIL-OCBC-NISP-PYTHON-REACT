@@ -3,14 +3,64 @@ import sys
 from flask import request, make_response
 from flask_sqlalchemy import Pagination
 from werkzeug.exceptions import abort
+
 from app import db
-from app.directors.models import Director, DirectorSchema
+from app.directors.models import Director
 from app.movies.models import MovieSchema, Movie
 
 
-def read_all(page=1, per_page=10,  search=""):
-	search = "%{}%".format(search)
-	movie: Pagination = Movie.query.filter(Movie.title.like(search)) \
+def _order_by(order_by, is_asc=True):
+	if order_by == "popularity":
+		if is_asc:
+			return Movie.popularity.asc()
+		return Movie.popularity.desc()
+	elif order_by == "budget":
+		if is_asc:
+			return Movie.budget.asc()
+		return Movie.budget.desc()
+	elif order_by == "revenue":
+		if is_asc:
+			return Movie.revenue.asc()
+		return Movie.revenue.desc()
+	elif order_by == "vote_average":
+		if is_asc:
+			return Movie.vote_average.asc()
+		return Movie.vote_average.desc()
+	elif order_by == "vote_count":
+		if is_asc:
+			return Movie.vote_count.asc()
+		return Movie.vote_count.desc()
+	elif order_by == "release_date":
+		if is_asc:
+			return Movie.release_date.asc()
+		return Movie.release_date.desc()
+	elif order_by == "original_title":
+		if is_asc:
+			return Movie.original_title.asc()
+		return Movie.original_title.desc()
+	else:
+		if is_asc:
+			return Movie.title.asc()
+		return Movie.title.desc()
+
+
+def _search_keyword_type(search_keyword_type, search_keyword):
+	search_keyword = "%{}%".format(search_keyword)
+	if search_keyword_type == "original_title":
+		return Movie.original_title.like(search_keyword)
+	elif search_keyword_type == "tagline":
+		return Movie.tagline.like(search_keyword)
+	elif search_keyword_type == "overview":
+		return Movie.overview.like(search_keyword)
+	else:
+		return Movie.title.like(search_keyword)
+
+def read_all(page=1, per_page=10, order_by="title", is_asc=True, search_keyword_type="title",
+			 search_keyword="", ):
+
+	movie: Pagination = Movie.query \
+		.filter(_search_keyword_type(search_keyword_type, search_keyword)) \
+		.order_by(_order_by(order_by, is_asc)) \
 		.paginate(page=page, per_page=per_page)
 
 	context = {

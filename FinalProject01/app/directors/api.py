@@ -2,17 +2,16 @@ import sys
 
 from flask import request, make_response
 from flask_sqlalchemy import Pagination
-from sqlalchemy.dialects.postgresql.psycopg2 import logger
-from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import abort
 
-from .models import Director, DirectorMoviesSchema, DirectorSchema
 from app import db
+from .models import Director, DirectorMoviesSchema, DirectorSchema
 
 
-def read_all(page=1, per_page=10, include_movies=True, search=""):
-	search = "%{}%".format(search)
-	director: Pagination = Director.query.filter(Director.name.like(search)) \
+def read_all(page=1, per_page=10, include_movies=True, search_keyword=""):
+	search_keyword = "%{}%".format(search_keyword)
+	director: Pagination = Director.query \
+		.filter(Director.name.like(search_keyword)) \
 		.paginate(page=page, per_page=per_page)
 
 	context = {
@@ -27,10 +26,13 @@ def read_all(page=1, per_page=10, include_movies=True, search=""):
 	return context, 200
 
 
-def read_one(id):
+def read_one(id, include_movies=True, ):
 	director = Director.query.filter(Director.id == id).one_or_none()
 	if director is not None:
-		director_schema = DirectorMoviesSchema()
+		if include_movies:
+			director_schema = DirectorMoviesSchema()
+		else:
+			director_schema = DirectorSchema()
 		return director_schema.dump(director)
 	else:
 		abort(404, f"Director not found for Id: {id}")

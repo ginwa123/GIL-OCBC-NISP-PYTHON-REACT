@@ -31,6 +31,3 @@ def create_app():
 	migrate.init_app(app, db, )
 	connexion_app.add_api('swagger.yml')
 	return app
-
-# from app.directors import *
-# from app.movies import *

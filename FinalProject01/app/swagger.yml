@@ -29,19 +29,13 @@ paths:
             default: 10
             type: integer
         - in: query
-          name: include_movies
-          description: include movies ?
+          name: search_keyword
+          description: search_keyword by name -> null or empty
           required: false
           schema:
-            default: true
-            type: boolean
-        - in: query
-          name: search
-          description: search director by name
-          required: false
-          schema:
+            nullable: true
             type: string
-
+        - $ref: "#/components/parameters/IsIncludeMovies"
 
       responses:
         200:
@@ -80,6 +74,7 @@ paths:
       description: Read one director
       parameters:
         - $ref: "#/components/parameters/DirectorId"
+        - $ref: "#/components/parameters/IsIncludeMovies"
       responses:
         200:
           description: Successfully read director from director data operation
@@ -124,14 +119,21 @@ paths:
       responses:
         200:
           description: Successfully delete director from director update operation
-         
+
   /movies:
     get:
       operationId: app.movies.api.read_all
       tags:
         - Movies
-      summary: Read the entire set of movie
-      description: Read the entire set of movie
+      summary: Read the entire set of movie, sort by higher popularity
+      description: Read the entire set of movie, sort by higher popularity
+      parameters:
+        - $ref: "#/components/parameters/PageMovies"
+        - $ref: "#/components/parameters/PerPageMovies"
+        - $ref: "#/components/parameters/IsAsc"
+        - $ref: "#/components/parameters/OrderByMovie"
+        - $ref: "#/components/parameters/SearchKeywordTypeMovie"
+        - $ref: "#/components/parameters/SearchKeywordMovie"
       responses:
         200:
           description: Successfully read movie set operation
@@ -205,9 +207,74 @@ paths:
         - $ref: "#/components/parameters/MovieId"
       responses:
         200:
-          description: Successfully delete movie 
+          description: Successfully delete movie
+
 components:
   parameters:
+    SearchKeywordMovie:
+      in: query
+      name: search_keyword
+      description: search_keyword -> null or empty
+      required: false
+      schema:
+        nullable: true
+        type: string
+    SearchKeywordTypeMovie:
+      in: query
+      name: search_keyword_type
+      description: search_keyword_type  -> title, tagline, overview, original_title
+      required: false
+      schema:
+        default: title
+        type: string
+    OrderByMovie:
+      in: query
+      name: order_by
+      description: order by -> title,  budget, popularity, release_date, revenue, vote_average, vote_count, tagline,
+      required: false
+      schema:
+        default: title
+        type: string
+    PageMovies:
+      in: query
+      name: page
+      description: page of the movie
+      required: false
+      schema:
+        default: 1
+        type: integer
+    PerPageMovies:
+      in: query
+      name: per_page
+      description: per_page movie
+      required: false
+      schema:
+        default: 10
+        type: integer
+    IsAsc:
+      in: query
+      name: is_asc
+      description: is_asc -> true,  false
+      required: false
+      schema:
+        default: true
+        type: boolean
+    SearchKeyword:
+      in: query
+      name: search_keyword
+      description: search_keyword -> null or empty
+      required: false
+      schema:
+        nullable: true
+        type: string
+    IsIncludeMovies:
+      in: query
+      name: include_movies
+      description: include movies ?
+      required: false
+      schema:
+        default: true
+        type: boolean
     DirectorId:
       in: path
       name: id

@@ -1,5 +1,3 @@
-from marshmallow import fields
-
 from app import db, ma
 
 
@@ -21,20 +19,10 @@ class Movie(db.Model):
 	__tablename__ = "movies"
 
 
-class DirectorrSchema(ma.SQLAlchemyAutoSchema):
-	class Meta:
-		from app.directors.models import Director
-		model = Director
-	# fields =("id", "name",)
-
-
 class MovieSchema(ma.SQLAlchemyAutoSchema):
-	# def __init__(self, **kwargs):
-	# 	super().__init__(**kwargs)
 	class Meta:
 		model = Movie
 		load_instance = True
-	# include_fk = True
-	# include_relationship = True
 
-	director = ma.Nested("DirectorSchema", default=None)
+	director_id = ma.Int()
+	director = ma.Nested("DirectorSchema", default=None, dump_only=True)
