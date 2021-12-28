@@ -55,8 +55,21 @@ def _search_keyword_type(search_keyword_type, search_keyword):
 	else:
 		return Movie.title.like(search_keyword)
 
+
 def read_all(page=1, per_page=10, order_by="title", is_asc=True, search_keyword_type="title",
 			 search_keyword="", ):
+	"""
+	Read all movies
+
+	:param page: number of page
+	:param per_page: number items per page
+	:param order_by: order movies based on movie column such as title, name, original_title, etc
+	:param is_asc: sort movies asc or desc
+	:param search_keyword_type: search movies based on movie column such as original_title, title,
+	tagline, and overview
+	:param search_keyword: search movie based on search_keyword_type
+	:return: 200 on successful
+	"""
 
 	movie: Pagination = Movie.query \
 		.filter(_search_keyword_type(search_keyword_type, search_keyword)) \
@@ -75,6 +88,12 @@ def read_all(page=1, per_page=10, order_by="title", is_asc=True, search_keyword_
 
 
 def read_one(id):
+	"""
+	Read one movie
+
+	:param id: id of the movie
+	:return: 200 on successful, 404 on failure movie not found
+	"""
 	movie = Movie.query \
 		.join(Director) \
 		.filter(Movie.id == id) \
@@ -88,6 +107,11 @@ def read_one(id):
 
 #
 def create():
+	"""
+	Create movie using movie object
+
+	:return: 201 on successfull, 409 on failure uid conflicted
+	"""
 	director = request.json
 	uid = director.get("uid")
 
@@ -106,6 +130,12 @@ def create():
 
 
 def update(id):
+	"""
+	Update one movie by id using movie object
+
+	:param id: id of the movie
+	:return: 200 on successful, 404 on failure movie not found, 409 on failure  uid exists
+	"""
 	movie = request.json
 	update_director = Movie.query.filter(
 		Movie.id == id
@@ -134,6 +164,12 @@ def update(id):
 
 
 def delete(id):
+	"""
+	Delete one movie by id
+
+	:param id: id of the movie
+	:return: 200 on successful, 404 on failure movie not found
+	"""
 	director = Movie.query.filter(Movie.id == id).one_or_none()
 
 	if director is not None:

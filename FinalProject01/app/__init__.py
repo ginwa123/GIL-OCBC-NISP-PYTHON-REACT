@@ -5,6 +5,7 @@ from flask import Flask
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import redirect
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -13,7 +14,8 @@ migrate = Migrate(compare_type=True)
 
 def create_app():
 	"""
-	Flask app
+	Flask app, and other useful component or config such as db, migrate, ma etc
+
 	:return: Flask
 	"""
 	basedir = os.path.abspath(os.path.dirname(__file__))
@@ -30,4 +32,14 @@ def create_app():
 	# migrate.init_app(app, db,  render_as_batch=True)
 	migrate.init_app(app, db, )
 	connexion_app.add_api('swagger.yml')
+
+	@app.route("/")
+	def hello_user():
+		"""
+		This routes will be redirect to swagger
+
+		:return: Swagger
+		"""
+		return redirect("/api/ui")
+
 	return app

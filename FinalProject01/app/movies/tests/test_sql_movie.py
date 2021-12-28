@@ -16,7 +16,7 @@ class MyTestCase(unittest.TestCase):
 
 
 	@pytest.mark.order(1)
-	def test_get_one_join(self):
+	def test_read_one_join(self):
 		with self.app.app_context():
 			movies = Movie.query \
 				.join(Director) \
@@ -27,7 +27,7 @@ class MyTestCase(unittest.TestCase):
 			self.assertEqual(schema["director"]["name"], "James Cameron")
 
 	@pytest.mark.order(2)
-	def test_get_all_join(self):
+	def test_read_all_join(self):
 		with self.app.app_context():
 			movies = Movie.query \
 				.join(Director) \

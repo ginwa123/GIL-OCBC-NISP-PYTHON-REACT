@@ -9,6 +9,15 @@ from .models import Director, DirectorMoviesSchema, DirectorSchema
 
 
 def read_all(page=1, per_page=10, include_movies=True, search_keyword=""):
+	"""
+	Read All Director order by name
+
+	:param page: number of page
+	:param per_page: number items per page d
+	:param include_movies: include data movies ?
+	:param search_keyword: Search director by name
+	:return: 200 on Successful
+	"""
 	search_keyword = "%{}%".format(search_keyword)
 	director: Pagination = Director.query \
 		.filter(Director.name.like(search_keyword)) \
@@ -28,6 +37,13 @@ def read_all(page=1, per_page=10, include_movies=True, search_keyword=""):
 
 
 def read_one(id, include_movies=True, ):
+	"""
+	Read One director by id
+
+	:param id: id of the director
+	:param include_movies: include data movies ?
+	:returns: 200 on Successful, 404 on failure because director not found
+	"""
 	director = Director.query.filter(Director.id == id).one_or_none()
 	if director is not None:
 		if include_movies:
@@ -40,6 +56,11 @@ def read_one(id, include_movies=True, ):
 
 
 def create():
+	"""
+	Create one director using director object
+
+	:return: 201 on successful, 409 on error uid exists
+	"""
 	director = request.json
 	uid = director.get("uid")
 
@@ -57,6 +78,12 @@ def create():
 
 
 def update(id):
+	"""
+	Update one director by id using director object
+
+	:param id: id of the director
+	:return: 200 on successful, 404 on failure id not found, 409 on failure  uid exists
+	"""
 	director = request.json
 	update_director = Director.query \
 		.filter(Director.id == id) \
@@ -85,6 +112,12 @@ def update(id):
 
 
 def delete(id):
+	"""
+	Delete one director by id
+
+	:param id: id of the director
+	:return: 200 on successful, 404 on failure director not found
+	"""
 	director = Director.query.filter(Director.id == id).one_or_none()
 
 	if director is not None:

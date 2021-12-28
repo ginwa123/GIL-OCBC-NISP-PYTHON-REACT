@@ -35,7 +35,7 @@ class MyTestCase(unittest.TestCase):
 			self.assertIsNotNone(director)
 
 	@pytest.mark.order(2)
-	def test_get_director(self):
+	def test_read_director1(self):
 		with self.app.app_context():
 			director = Director.query.filter(Director.uid == self.director["uid"]) \
 				.one_or_none()
@@ -56,7 +56,7 @@ class MyTestCase(unittest.TestCase):
 			self.assertIsNotNone(self.director_schema.dump(director))
 
 	@pytest.mark.order(4)
-	def test_get_director(self):
+	def test_read_director2(self):
 		with self.app.app_context():
 			director = Director.query.filter(Director.uid == self.director["uid"]) \
 				.filter(Director.name == "gilang tri new") \
@@ -73,7 +73,7 @@ class MyTestCase(unittest.TestCase):
 			db.session.commit()
 
 	@pytest.mark.order(6)
-	def test_get_delete_director(self):
+	def test_read_delete_director(self):
 		with self.app.app_context():
 			director = Director.query.filter(Director.uid == self.director["uid"]) \
 				.one_or_none()
@@ -81,7 +81,7 @@ class MyTestCase(unittest.TestCase):
 			self.assertIsNotNone(self.director_schema.dump(director))
 
 	@pytest.mark.order(7)
-	def test_get_paginate(self):
+	def test_read_paginate(self):
 		with self.app.app_context():
 			director: Pagination = Director.query.filter() \
 				.paginate(page=1, per_page=10)
