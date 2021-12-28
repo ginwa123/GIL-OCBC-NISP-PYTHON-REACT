@@ -1,0 +1,297 @@
+openapi: "3.0.0"
+info:
+  description: Final Project Api
+  version: "1.0.0"
+  title: Final Project 1 Python
+servers:
+  - url: /api
+paths:
+  /directors:
+    get:
+      operationId: app.directors.api.read_all
+      tags:
+        - Directors
+      summary: Read the entire set of director
+      description: Read the entire set of director
+      parameters:
+        - in: query
+          name: page
+          description: page of the director to get
+          required: false
+          schema:
+            default: 1
+            type: integer
+        - in: query
+          name: per_page
+          description: per_page director to get
+          required: false
+          schema:
+            default: 10
+            type: integer
+        - in: query
+          name: include_movies
+          description: include movies ?
+          required: false
+          schema:
+            default: true
+            type: boolean
+        - in: query
+          name: search
+          description: search director by name
+          required: false
+          schema:
+            type: string
+
+
+      responses:
+        200:
+          description: Successfully read director set operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Director"
+    post:
+      operationId: app.directors.api.create
+      tags:
+        - Directors
+      summary: Create a director
+      description: Create a new director
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Director"
+      responses:
+        201:
+          description: Successfully created director
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Director"
+
+  /directors/{id}:
+    get:
+      operationId: app.directors.api.read_one
+      tags:
+        - Directors
+      summary: Read one director
+      description: Read one director
+      parameters:
+        - $ref: "#/components/parameters/DirectorId"
+      responses:
+        200:
+          description: Successfully read director from director data operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Director"
+        404:
+          description: failed find director
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: app.directors.api.update
+      tags:
+        - Directors
+      summary: Update a director
+      description: Update a director
+      parameters:
+        - $ref: "#/components/parameters/DirectorId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Director"
+      responses:
+        200:
+          description: Successfully update director from director update operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Director"
+    delete:
+      operationId: app.directors.api.delete
+      tags:
+        - Directors
+      summary: delete a director
+      description: delete a director
+      parameters:
+        - $ref: "#/components/parameters/DirectorId"
+      responses:
+        200:
+          description: Successfully delete director from director update operation
+         
+  /movies:
+    get:
+      operationId: app.movies.api.read_all
+      tags:
+        - Movies
+      summary: Read the entire set of movie
+      description: Read the entire set of movie
+      responses:
+        200:
+          description: Successfully read movie set operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Director"
+    post:
+      operationId: app.movies.api.create
+      tags:
+        - Movies
+      summary: Create a Movie
+      description: Create a new Movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movie"
+      responses:
+        201:
+          description: Successfully created Movie
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /movies/{id}:
+    get:
+      operationId: app.movies.api.read_one
+      tags:
+        - Movies
+      summary: Read one movie
+      description: Read one movie
+      parameters:
+        - $ref: "#/components/parameters/MovieId"
+      responses:
+        200:
+          description: Successfully read movie set operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+    put:
+      operationId: app.movies.api.update
+      tags:
+        - Movies
+      summary: Update one movie
+      description: Update one movie
+      parameters:
+        - $ref: "#/components/parameters/MovieId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movie"
+      responses:
+        200:
+          description: Successfully read movie set operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+    delete:
+      operationId: app.movies.api.delete
+      tags:
+        - Movies
+      summary: delete a movie
+      description: delete a movie
+      parameters:
+        - $ref: "#/components/parameters/MovieId"
+      responses:
+        200:
+          description: Successfully delete movie 
+components:
+  parameters:
+    DirectorId:
+      in: path
+      name: id
+      description: Id of the director to get
+      required: True
+      schema:
+        type: integer
+    MovieId:
+      in: path
+      name: id
+      description: Id of the movie to get
+      required: True
+      schema:
+        type: integer
+  schemas:
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: description error
+        status:
+          type: integer
+          description: status error
+    Director:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Id of the director
+          readOnly: true
+        name:
+          type: string
+          description: name of the director
+        gender:
+          type: integer
+          description: gender of the director
+        uid:
+          type: integer
+          description: uid of the director
+        department:
+          type: string
+          description: department of the director
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Id of the director
+          readOnly: true
+        original_title:
+          type: string
+          description: original title of the movie
+        budget:
+          type: number
+          description: budget of the movie
+        popularity:
+          type: number
+          description: popularity of the movie
+        release_date:
+          type: string
+          description: date of the movie
+          default: "2021-10-01"
+        revenue:
+          type: number
+          description: revenue of the movie
+        title:
+          type: string
+          description: title of the movie
+        vote_average:
+          type: number
+          description: vote average of the movie
+        vote_count:
+          type: number
+          description: vote_count of the movie
+        overview:
+          type: string
+          description: overview of the movie
+        tagline:
+          type: string
+          description: tagline of the movie
+        uid:
+          type: integer
+          description: uid of the movie
+        director_id:
+          type: integer
+          description: director id of the movie
