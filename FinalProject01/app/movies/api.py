@@ -180,10 +180,10 @@ def delete(id):
 	:param id: id of the movie
 	:return: 200 on successful, 404 on failure movie not found
 	"""
-	director = Movie.query.filter(Movie.id == id).one_or_none()
+	movie = Movie.query.filter(Movie.id == id).one_or_none()
 
-	if director is not None:
-		db.session.delete(director)
+	if movie is not None:
+		db.session.delete(movie)
 		db.session.commit()
 		return make_response({
 			"detail": f"Movie {id} deleted"
