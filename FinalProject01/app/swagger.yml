@@ -14,23 +14,11 @@ paths:
       summary: Read the entire set of director
       description: Read the entire set of director
       parameters:
-        - in: query
-          name: page
-          description: page of the director to get
-          required: false
-          schema:
-            default: 1
-            type: integer
-        - in: query
-          name: per_page
-          description: per_page director to get
-          required: false
-          schema:
-            default: 10
-            type: integer
+        - $ref : "#/components/parameters/PageDirectors"
+        - $ref : "#/components/parameters/PerPageDirectors"
         - in: query
           name: search_keyword
-          description: search_keyword by name -> null or empty
+          description: search_keyword by name 
           required: false
           schema:
             nullable: true
@@ -50,8 +38,8 @@ paths:
       operationId: app.directors.api.create
       tags:
         - Directors
-      summary: Create a director
-      description: Create a new director
+      summary: Create one director
+      description: Create one director
       requestBody:
         content:
           application/json:
@@ -92,8 +80,8 @@ paths:
       operationId: app.directors.api.update
       tags:
         - Directors
-      summary: Update a director
-      description: Update a director
+      summary: Update one director
+      description: Update one director
       parameters:
         - $ref: "#/components/parameters/DirectorId"
       requestBody:
@@ -112,8 +100,8 @@ paths:
       operationId: app.directors.api.delete
       tags:
         - Directors
-      summary: delete a director
-      description: delete a director
+      summary: delete one director
+      description: delete one director
       parameters:
         - $ref: "#/components/parameters/DirectorId"
       responses:
@@ -125,8 +113,8 @@ paths:
       operationId: app.movies.api.read_all
       tags:
         - Movies
-      summary: Read the entire set of movie, sort by higher popularity
-      description: Read the entire set of movie, sort by higher popularity
+      summary: Read the entire set of movie
+      description: Read the entire set of movie
       parameters:
         - $ref: "#/components/parameters/PageMovies"
         - $ref: "#/components/parameters/PerPageMovies"
@@ -147,8 +135,8 @@ paths:
       operationId: app.movies.api.create
       tags:
         - Movies
-      summary: Create a Movie
-      description: Create a new Movie
+      summary: Create one Movie
+      description: Create one Movie
       requestBody:
         content:
           application/json:
@@ -201,8 +189,8 @@ paths:
       operationId: app.movies.api.delete
       tags:
         - Movies
-      summary: delete a movie
-      description: delete a movie
+      summary: delete one movie
+      description: delete one movie
       parameters:
         - $ref: "#/components/parameters/MovieId"
       responses:
@@ -242,6 +230,22 @@ components:
       required: false
       schema:
         default: 1
+        type: integer
+    PageDirectors:
+      in: query
+      name: page
+      description: page of the directors
+      required: false
+      schema:
+        default: 1
+        type: integer
+    PerPageDirectors:
+      in: query
+      name: per_page
+      description: per_page directors
+      required: false
+      schema:
+        default: 10
         type: integer
     PerPageMovies:
       in: query
