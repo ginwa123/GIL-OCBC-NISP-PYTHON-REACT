@@ -112,21 +112,26 @@ def create():
 
 	:return: 201 on successfull, 409 on failure uid conflicted
 	"""
-	director = request.json
-	uid = director.get("uid")
+	movie = request.json
+	uid = movie.get("uid")
+	director_id = movie.get("director_id")
 
-	existing_director = Movie.query.filter(Movie.uid == uid).one_or_none()
-
-	if existing_director is None:
+	existing_movie = Movie.query.filter(Movie.uid == uid).one_or_none()
+	existing_director = Director.query.filter(Director.id == director_id).one_or_none()
+	print(existing_movie, existing_director)
+	if existing_movie is None and bool(existing_director):
 		schema = MovieSchema()
-		new_director = schema.load(director)
-		db.session.add(new_director)
+		new_movie = schema.load(movie)
+		db.session.add(new_movie)
 		db.session.commit()
-		data = schema.dump(new_director)
-
+		data = schema.dump(new_movie)
 		return data, 201
-	else:
+	elif existing_movie is not None:
 		abort(409, f"Movie with uid : {uid}  exists already"),
+	elif not bool(existing_director):
+		abort(404, f"Director with id {director_id} not found")
+	else:
+		abort(500, "something wrong")
 
 
 def update(id):
@@ -175,7 +180,9 @@ def delete(id):
 	if director is not None:
 		db.session.delete(director)
 		db.session.commit()
-		return make_response(f"Movie {id} deleted"), 200
+		return make_response({
+			"detail": f"Movie {id} deleted"
+		}), 200
 
 	else:
 		abort(404, f"Movie not found for Id: {id}", )

@@ -97,6 +97,19 @@ class MyTestCase(unittest.TestCase):
 			self.assertIsNotNone(context)
 			self.assertEqual(director.has_next, True)
 
+	@pytest.mark.order(8)
+	def test_read_is_director_exists(self):
+		with self.app.app_context():
+			director = Director.query.filter(Director.id == 4762).one_or_none()
+			schema = DirectorMoviesSchema().dump(director)
+			print(schema)
+			if bool(director):
+				print("Exists")
+			else:
+				self.assertIsNotNone(director)
+			self.assertIsNotNone(director)
+			self.assertEqual("James Cameron", schema["name"])
+
 
 if __name__ == '__main__':
 	unittest.main()

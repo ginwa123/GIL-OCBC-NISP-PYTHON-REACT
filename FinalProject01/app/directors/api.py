@@ -123,7 +123,9 @@ def delete(id):
 	if director is not None:
 		db.session.delete(director)
 		db.session.commit()
-		return make_response(f"Director {id} deleted"), 200
+		return make_response({
+			"detail": f"Director {id} deleted"
+		}), 200
 
 	else:
 		abort(404, f"Director not found for Id: {id}", )
