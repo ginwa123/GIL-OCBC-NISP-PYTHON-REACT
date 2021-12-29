@@ -14,11 +14,11 @@ paths:
       summary: Read the entire set of director
       description: Read the entire set of director
       parameters:
-        - $ref : "#/components/parameters/PageDirectors"
-        - $ref : "#/components/parameters/PerPageDirectors"
+        - $ref: "#/components/parameters/PageDirectors"
+        - $ref: "#/components/parameters/PerPageDirectors"
         - in: query
           name: search_keyword
-          description: search_keyword by name 
+          description: search_keyword by name
           required: false
           schema:
             nullable: true
@@ -52,6 +52,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Director"
+        404:
+          description: Failed find director from director read operation because director not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Director not found for Id xxxx
+        409:
+          description: Conflict create director from director create operation because uid already exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Conflict with uid xxx  exists already
 
   /directors/{id}:
     get:
@@ -71,11 +91,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Director"
         404:
-          description: failed find director
+          description: Failed find director from director read operation because director not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Director not found for Id ":" xxxx
     put:
       operationId: app.directors.api.update
       tags:
@@ -96,6 +120,27 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Director"
+        404:
+          description: Failed update director from director update operation because director not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Director not found for Id ":" xxxx
+        409:
+          description: Conflict update director from director update operation because uid already exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Conflict with uid ":" xxx  exists already
+          
     delete:
       operationId: app.directors.api.delete
       tags:
@@ -106,8 +151,25 @@ paths:
         - $ref: "#/components/parameters/DirectorId"
       responses:
         200:
-          description: Successfully delete director from director update operation
-
+          description: Successfully delete director from director delete operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Director x deleted
+        404:
+          description: Failed delete director from director delete operation because director not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Director not found for Id ":" xxxx
   /movies:
     get:
       operationId: app.movies.api.read_all
@@ -130,7 +192,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Director"
+                  $ref: "#/components/schemas/Movie"
     post:
       operationId: app.movies.api.create
       tags:
@@ -149,6 +211,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Movie"
+        404:
+          description: Failed create movie from movie create operation because director not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Director not found for Id ":" xxxx
+        409:
+          description: Conflict create movie from movie create operation because uid already exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Conflict with uid xxx  exists already
   /movies/{id}:
     get:
       operationId: app.movies.api.read_one
@@ -165,6 +247,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Movie"
+        404:
+          description: Failed read movie from moview read operation because movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Movie not found for Id ":" xxxx
     put:
       operationId: app.movies.api.update
       tags:
@@ -185,6 +277,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Movie"
+        404:
+          description: Failed update movie from movie update operation because movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Movie not found for Id ":" xxxx
+        409:
+          description: Conflict update movie from movie update operation because uid already exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Conflict with uid xxx  exists already
     delete:
       operationId: app.movies.api.delete
       tags:
@@ -196,6 +308,16 @@ paths:
       responses:
         200:
           description: Successfully delete movie
+        404:
+          description: Failed delete movie from movie delete operation because movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    default: Movie not found for Id ":" xxxx
 
 components:
   parameters:
