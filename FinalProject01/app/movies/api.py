@@ -142,22 +142,27 @@ def update(id):
 	:return: 200 on successful, 404 on failure movie not found, 409 on failure  uid exists
 	"""
 	movie = request.json
-	update_director = Movie.query.filter(
-		Movie.id == id
-	).one_or_none()
+	update_movie = Movie.query\
+		.filter(Movie.id == id)\
+		.one_or_none()
 
 	uid = movie.get("uid")
-
-	if update_director is None:
+	director_id = movie.get("director_id")
+	existing_director = Director.query \
+		.filter(Director.id == director_id) \
+		.one_or_none()
+	if not bool(existing_director):
+		abort(404, f"Director Id not found {director_id}")
+	if update_movie is None:
 		abort(404, f"Movie not found for Id: {id}", )
 	else:
 		try:
 			schema = MovieSchema()
 			update = schema.load(movie)
-			update.id = update_director.id
+			update.id = update_movie.id
 			db.session.merge(update)
 			db.session.commit()
-			data = schema.dump(update_director)
+			data = schema.dump(update_movie)
 			return data, 200
 		except Exception as ex:
 			ex_type, ex_value, ex_traceback = sys.exc_info()
