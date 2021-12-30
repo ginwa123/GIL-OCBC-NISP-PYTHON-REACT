@@ -28,4 +28,13 @@
 - Day 6
   - Session 11
     - Learn to deploy flask app to heroku platform
+  - Session 12
     - Learn unit testing in python
+- Day 7 - 9
+  - Session 13 - 15
+    - Prepare final project python
+- Day 10
+  - Session 16
+    - Learn  javascript regular function, arrow function, and object destruction
+  - Session 17
+    - Learn javascript promise, dom, webpack and babel
