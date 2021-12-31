@@ -38,3 +38,8 @@
     - Learn  javascript regular function, arrow function, and object destruction
   - Session 17
     - Learn javascript promise, dom, webpack and babel
+- Day 11
+  - Session 18
+    - Introduction React
+  - Session 19
+    - Learn Data flow in react, states, props and atomic design 
