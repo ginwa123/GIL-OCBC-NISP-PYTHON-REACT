@@ -13,7 +13,7 @@ interface Article {
 export const GContent = () => {
   const [sArticles, setArticles] = useState<Article[]>([])
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/articles")
+    fetch("/articles")
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
