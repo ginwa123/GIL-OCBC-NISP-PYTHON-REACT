@@ -173,16 +173,56 @@ export const kanbanSlice = createSlice({
     }),
 
     reOrderingKanbanItem: ((state, action) => {
-      // copystate1
-      let copyState1 = [...current(state) as Kanban[]]
-      copyState1 = copyState1.filter(value => value.status === action.payload.status)
-      const [removed] = copyState1.splice(action.payload.startIndex, 1)
-      copyState1.splice(action.payload.endIndex, 0, removed)
+      const {type, payload} = action
+      const {source, destination} = payload
+      const {droppableId: statusSource, index: indexSource} = source
+      const {droppableId: statusDestination, index: indexDestination} = destination
+      console.log(indexSource, indexDestination)
+      if (statusSource === statusDestination) {
+        // vertical reorder
+        // a: all kaban excep droppableIdSource
+        let copyState1 = [...current(state) as Kanban[]]
+        copyState1 = copyState1.filter(value => value.status === statusSource)
+        // replace destination with source
+        const [removed] = copyState1.splice(indexSource, 1)
+        copyState1.splice(indexDestination, 0, removed)
 
-      // copystate2
-      let copyState2 = [...current(state) as Kanban[]]
-      copyState2 = copyState2.filter(value => value.status !== action.payload.status)
-      return [...copyState1, ...copyState2]
+        // b: all kaban except a
+        let copyState2 = [...current(state) as Kanban[]]
+        copyState2 = copyState2.filter(value => value.status !== statusDestination)
+
+        return [...copyState1, ...copyState2]
+      }
+      // horizontal reorder
+      const copyState = [...current(state) as Kanban[]]
+
+      // a. kanbans sources
+      let kanbanSourcesState = [...copyState.filter(value =>
+              value.status === statusSource)]
+
+      // b. take kanban source
+      let kanbanSource = {
+        ...kanbanSourcesState.find((value, index) =>
+                (value.status === statusSource && index === indexSource))
+      } as Kanban
+      // replace status from source to destination
+      kanbanSource.status = statusDestination
+      // delete b. kanban source in a. kanban sources
+      kanbanSourcesState.splice(indexSource, 1)
+
+      // c. kanbans destination
+      let kanbanDestinationsState = [...copyState.filter(value =>
+              value.status === statusDestination)]
+      // d. insert a. new kanban source into index destination
+      kanbanDestinationsState.splice(indexDestination, 0, kanbanSource)
+
+      // e. kanbans sources except a and b
+      const exceptSourceAndDestinationState = [...copyState.filter(value =>
+              (value.status !== statusSource && value.status !== statusDestination))]
+
+      //
+      return [...exceptSourceAndDestinationState, ...kanbanSourcesState, ...kanbanDestinationsState]
+
     })
   },
 

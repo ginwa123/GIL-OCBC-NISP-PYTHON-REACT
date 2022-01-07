@@ -35,69 +35,67 @@ export const GKabanSubContainer = (props: Props) => {
   })
   return (
           <>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
-                {((provided, snapshot) =>
-                        <Grid item {...provided.droppableProps}
-                              ref={provided.innerRef}>
-                          <Typography variant="h4" color="text.primary" gutterBottom>
-                            {props.pName}
-                          </Typography>
-                          <List
+            <Droppable droppableId={props.pName.toUpperCase()}>
+              {((provided, snapshot) =>
+                      <Grid item {...provided.droppableProps}
+                            ref={provided.innerRef}>
+                        <Typography variant="h4" color="text.primary" gutterBottom>
+                          {props.pName}
+                        </Typography>
+                        <List
+                                sx={{
+                                  backgroundColor: "#eeeeee",
+                                  padding: "0.01em",
+                                  borderRadius: 4
+                                }}
+                        >
+                          {props.pList.map((kanban, index: number) =>
+                                  <Draggable key={kanban.index} draggableId={kanban.index.toString()}
+                                             index={index}>
+                                    {(provided, snapshot) =>
+                                            <ListItem
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={getItemStyle(
+                                                            snapshot.isDragging,
+                                                            provided.draggableProps.style
+                                                    )}
+                                                    key={kanban.index}>
+                                              <ListItemButton>
+                                                <GKanbanItem pKanban={kanban}/>
+                                              </ListItemButton>
+
+                                            </ListItem>
+
+                                    }
+                                  </Draggable>
+                          )
+                          }
+                          {props.pList.length < 1 && <List
                                   sx={{
                                     backgroundColor: "#eeeeee",
                                     padding: "0.01em",
                                     borderRadius: 4
                                   }}
                           >
-                            {props.pList.map((kanban, index: number) =>
-                                    <Draggable key={kanban.index} draggableId={kanban.index.toString()}
-                                               index={index}>
-                                      {(provided, snapshot) =>
-                                              <ListItem
-                                                      ref={provided.innerRef}
-                                                      {...provided.draggableProps}
-                                                      {...provided.dragHandleProps}
-                                                      style={getItemStyle(
-                                                              snapshot.isDragging,
-                                                              provided.draggableProps.style
-                                                      )}
-                                                      key={kanban.index}>
-                                                <ListItemButton>
-                                                  <GKanbanItem pKanban={kanban}/>
-                                                </ListItemButton>
-
-                                              </ListItem>
-
-                                      }
-                                    </Draggable>
-                            )
-                            }
-                            {props.pList.length < 1 && <List
-                                    sx={{
-                                      backgroundColor: "#eeeeee",
-                                      padding: "0.01em",
-                                      borderRadius: 4
-                                    }}
-                            >
-                              <ListItem>
-                                <ListItemButton>
-                                  <Card sx={{borderRadius: 4}} variant="outlined">
-                                    <CardContent>
-                                      <Typography variant="h6">
-                                        Empty
-                                      </Typography>
-                                    </CardContent>
-                                  </Card>
-                                </ListItemButton>
-                              </ListItem>
-                            </List>}
-                          </List>
-                          {provided.placeholder}
-                        </Grid>)
-                }
-              </Droppable>
-            </DragDropContext>
+                            <ListItem>
+                              <ListItemButton>
+                                <Card sx={{borderRadius: 4}} variant="outlined">
+                                  <CardContent>
+                                    <Typography variant="h6">
+                                      Empty
+                                    </Typography>
+                                  </CardContent>
+                                </Card>
+                              </ListItemButton>
+                            </ListItem>
+                          </List>}
+                        </List>
+                        {provided.placeholder}
+                      </Grid>)
+              }
+            </Droppable>
           </>
   )
 }
