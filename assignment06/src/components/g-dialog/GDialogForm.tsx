@@ -1,30 +1,41 @@
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField} from "@mui/material"
-import {Kanban, rActionKanban, rKanbanStatus} from "../my-redux/kanban"
-import {useAppDispatch} from "../my-redux/hooks"
+import {
+  addKanbanItemAsync,
+  editKanbanItemAsync,
+  Kanban,
+  rActionKanban,
+  rKanbanColor,
+  rKanbanStatus
+} from "../../g-store/kanban"
+import {useAppDispatch, useAppSelector} from "../../g-store/hooks"
 import React, {BaseSyntheticEvent, useEffect, useState} from "react"
-import {createAsyncThunk} from "@reduxjs/toolkit"
 import {useDispatch} from "react-redux"
-import {toast} from "react-toastify"
+import {useNavigate, useParams} from "react-router-dom"
 
 
-interface Props {
-  pName: string,
-  pToggleDialog: boolean,
-  pSetDialogListener: (dialogIsOpen: boolean) => void,
-}
-
-export const GDialogForm = (props: Props) => {
-  const sDefaultFormState = {title: "", content: "", status: "BACKLOG", index: 0}
+export const GDialogForm = () => {
+  const sDefaultFormState = {index: 0, title: "", content: "", status: "BACKLOG", hexColor: "WHITE"}
   const [sFormState, setFormState] = useState<Kanban>(sDefaultFormState)
-  const sToggleDialog = () => props.pSetDialogListener(!props.pToggleDialog)
   const sDispatch = useAppDispatch()
   const nDispatch = useDispatch()
+  const sParams = useParams()
+  const sNavigate = useNavigate()
+  const sAppSelector = useAppSelector(state => state.taskReducer)
 
   useEffect(() => {
-    // clear sFormState
-    setFormState(sDefaultFormState)
-  }, [props.pToggleDialog])
-
+    if (sParams.mode === "edit") {
+      setFormState(() => {
+        const copyKanbans = [...sAppSelector]
+        let kanban = {
+          ...copyKanbans.find(value =>
+                  value.index.toString() === sParams.index) as Kanban
+        }
+        const color = rKanbanColor.find(value => value.hex === kanban.hexColor)
+        kanban.hexColor = color?.name ? color.name : "WHITE"
+        return kanban
+      })
+    }
+  }, [])
 
   const isValidForm = (sFormState: Kanban) => {
     const {title, content, index, status} = sFormState
@@ -34,17 +45,22 @@ export const GDialogForm = (props: Props) => {
     return true
   }
 
-  const addKanban = () => {
-    if (isValidForm(sFormState)) {
-      // nDispatch global dispatch
-      nDispatch(()=> {
-        toast.info('Kanban already created, please wait 2 second');
-        setTimeout(() => {
-          sDispatch(rActionKanban.addKanbanItem({...sFormState}))
-        },2000)
-      })
 
-      sToggleDialog()
+  const addOrEditKanban = (editType = "add") => {
+    if (isValidForm(sFormState)) {
+      if (sParams.mode === "add") {
+        nDispatch(addKanbanItemAsync(sFormState))
+      } else if (sParams.mode === "edit") {
+        if (editType === "delete") {
+          sDispatch(rActionKanban.deleteKanbanItem({index: sParams.index}))
+        }
+        if (editType === "edit") {
+          nDispatch(editKanbanItemAsync(sFormState))
+        }
+      } else {
+
+      }
+      sNavigate(-1)
     }
   }
   const handleTitleForm = (event: BaseSyntheticEvent) => {
@@ -68,6 +84,13 @@ export const GDialogForm = (props: Props) => {
     })
   }
 
+  const handleHexColorForm = (event: BaseSyntheticEvent) => {
+    const formValue = event.target.value
+    setFormState(prevState => {
+      return {...prevState, hexColor: formValue}
+    })
+  }
+
   const form = () => (
           <Box sx={{display: "flex", flexWrap: "wrap"}} component="form">
             <TextField
@@ -75,6 +98,7 @@ export const GDialogForm = (props: Props) => {
                     fullWidth sx={{m: 1}}
                     id="outlined-adornment-amount"
                     label="Title"
+                    value={sFormState.title}
                     onChange={handleTitleForm}
                     error={sFormState.title.trim().length < 1}
             />
@@ -84,6 +108,7 @@ export const GDialogForm = (props: Props) => {
                     label="Content"
                     multiline
                     maxRows={4}
+                    value={sFormState.content}
                     onChange={handleContentForm}
                     error={sFormState.content.trim().length < 1}
 
@@ -104,20 +129,41 @@ export const GDialogForm = (props: Props) => {
                       </MenuItem>
               ))}
             </TextField>
+            <TextField
+                    fullWidth sx={{m: 1}}
+                    select
+                    label="Select"
+                    helperText="Select Kanban Color"
+                    onChange={handleHexColorForm}
+                    value={sFormState.hexColor}
+            >
+              {rKanbanColor.map((kanbanColor, index) => (
+                      <MenuItem key={index} value={kanbanColor.name}>
+                        {kanbanColor.name}
+                      </MenuItem>
+              ))}
+            </TextField>
+            {/*<SketchExample />*/}
           </Box>
   )
 
   const formAction = () => (
-          <DialogActions>
-            <Button onClick={sToggleDialog}>Cancel</Button>
-            <Button onClick={addKanban}>Add Now</Button>
+          <DialogActions style={{justifyContent: "space-between"}}>
+            <Box>
+              {sParams.mode === "edit" &&
+                      <Button onClick={() => addOrEditKanban("delete")} sx={{color: "red"}}>DELETE Kanban</Button>}
+            </Box>
+            <Box>
+              <Button onClick={() => sNavigate(-1)}>Cancel</Button>
+              <Button onClick={() => addOrEditKanban("edit")}>{sParams.mode?.toUpperCase()} Now</Button>
+            </Box>
           </DialogActions>
   )
 
   return (
           <>
-            <Dialog open={props.pToggleDialog} onClose={sToggleDialog}>
-              <DialogTitle>{props.pName}</DialogTitle>
+            <Dialog open={true}>
+              <DialogTitle>{sParams.mode?.toUpperCase()}</DialogTitle>
               <DialogContent>
                 {form()}
               </DialogContent>

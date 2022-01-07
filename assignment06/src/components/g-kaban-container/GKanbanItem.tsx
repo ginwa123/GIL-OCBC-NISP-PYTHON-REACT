@@ -1,19 +1,20 @@
-import {Box, Card, CardActions, CardContent, Grid, IconButton, Typography} from "@mui/material"
+import {Card, CardActions, CardContent, Divider, Grid, IconButton, Typography} from "@mui/material"
 import React from "react"
-import {Kanban, rActionKanban} from "../../my-redux/kanban"
-import {useAppDispatch} from "../../my-redux/hooks"
+import {Kanban, rActionKanban} from "../../g-store/kanban"
+import {useAppDispatch} from "../../g-store/hooks"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
+import {useNavigate} from "react-router-dom"
 
 interface Props {
-  kanban: Kanban,
-  index: number
+  pKanban: Kanban,
 }
 
 export const GKanbanItem = (props: Props) => {
   const sDispatch = useAppDispatch()
-  const sKanban = props.kanban
-  const sIndex = props.index
+  const sKanban = props.pKanban
+  const sNavigate = useNavigate()
+
   const handleClickForward = () => {
     if (sKanban.status === "BACKLOG") {
       sDispatch(rActionKanban.changeKanbanStatus({...sKanban, status: "IN PROGRESS"}))
@@ -40,10 +41,10 @@ export const GKanbanItem = (props: Props) => {
       if (sKanban.status === "BACKLOG") {
         return (
                 <>
-                  <Grid item >
+                  <Grid item>
 
                   </Grid>
-                  <Grid item >
+                  <Grid item>
                     <IconButton onClick={handleClickForward}>
                       <ArrowForwardIosIcon/>
                     </IconButton>
@@ -58,7 +59,7 @@ export const GKanbanItem = (props: Props) => {
       if (sKanban.status === "IN PROGRESS" || sKanban.status === "EVALUATION") {
         return (
                 <>
-                  <Grid item >
+                  <Grid item>
                     <IconButton onClick={handleClickBackward}>
                       <ArrowBackIosIcon/>
                     </IconButton>
@@ -77,12 +78,12 @@ export const GKanbanItem = (props: Props) => {
       if (sKanban.status === "DONE") {
         return (
                 <>
-                  <Grid item >
+                  <Grid item>
                     <IconButton onClick={handleClickBackward}>
                       <ArrowBackIosIcon/>
                     </IconButton>
                   </Grid>
-                  <Grid item >
+                  <Grid item>
 
                   </Grid>
                 </>
@@ -101,16 +102,20 @@ export const GKanbanItem = (props: Props) => {
 
   return (
           <>
-            <Card key={sIndex} variant="outlined" sx={{width: 200,  borderRadius: 4 }}>
-              <CardContent>
-                <Typography variant="h6">
+            <Card variant="outlined"
+                  sx={{width: 200, borderRadius: 4, backgroundColor: sKanban.hexColor}}>
+              <CardContent onClick={() => sNavigate("/home/dialog/edit/" + sKanban.index)}>
+                <Typography variant="h6" align="left">
                   {sKanban.title}
                 </Typography>
-                <Typography variant="body2">
+                <Divider sx={{
+                  marginBottom: 2
+                }}/>
+                <Typography variant="body2" align="left">
                   {sKanban.content}
                 </Typography>
               </CardContent>
-              <CardActions >
+              <CardActions>
                 <Grid container
                       direction="row"
                       justifyContent="space-between"
