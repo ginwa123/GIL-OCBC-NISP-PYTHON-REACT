@@ -8,7 +8,7 @@ import AddIcon from "@mui/icons-material/Add"
 export const GHome = () => {
   return (
           <>
-            <GAppBar />
+            <GAppBar/>
             <Container maxWidth="md" sx={{
               marginTop: 10
             }}>

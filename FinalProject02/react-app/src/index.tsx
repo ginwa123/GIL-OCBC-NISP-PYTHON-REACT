@@ -7,7 +7,7 @@ import {Provider} from "react-redux"
 import {store} from "./g-store/store"
 import "react-toastify/dist/ReactToastify.min.css"
 import {GDialogDelete} from "./components/dialogs/GDialogDelete"
-import { GDialogAddUpdateForm } from "./components/dialogs/GDialogAddUpdateForm"
+import {GDialogAddUpdateForm} from "./components/dialogs/GDialogAddUpdateForm"
 
 ReactDOM.render(
         <React.StrictMode>

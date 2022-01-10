@@ -1,6 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit"
-import {toast} from "react-toastify"
-import {sAddUser, sFetchUserInDebug} from "./action-async"
+import {sFetchUserInDebug} from "./action-async"
 
 export interface User {
   key: string
