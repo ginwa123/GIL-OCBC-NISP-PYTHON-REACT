@@ -5,9 +5,11 @@ import {ToastContainer} from "react-toastify"
 import {CssBaseline, ThemeProvider} from "@mui/material"
 import {darkTheme, lightTheme} from "./custom-theme"
 import {useAppSelector} from "./g-store/hooks"
+import {Theme} from "./g-store/theme/reducer"
 
 function App() {
-  const sThemeSelector = useAppSelector(state => state.themeReducer)
+  const sThemeSelector: Theme = useAppSelector(state => state.themeReducer)
+
 
   return (
           <>
@@ -21,7 +23,11 @@ function App() {
                       pauseOnFocusLoss
                       draggable={false}
                       hideProgressBar={true}
-                      autoClose={1000}/>
+                      autoClose={1000}
+                      toastStyle={{
+                        backgroundColor: sThemeSelector.isLight ? "white" : "#383838",
+                        color: sThemeSelector.isLight ? "black" : "white"
+                      }}/>
               <GHome/>
               <Outlet/>
             </ThemeProvider>
