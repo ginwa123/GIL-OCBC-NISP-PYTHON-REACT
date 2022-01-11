@@ -87,7 +87,7 @@ export const GTable = () => {
                 {sCheckboxSelected.length > 0 ? (
                         <Tooltip title="Delete">
                           <IconButton onClick={handleDeleteToolbar}>
-                            <DeleteIcon/>
+                            <DeleteIcon sx={{color: red[500]}}/>
                           </IconButton>
                         </Tooltip>
                 ) : <></>}
