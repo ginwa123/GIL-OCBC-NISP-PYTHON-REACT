@@ -8,6 +8,27 @@ import {store} from "./g-store/store"
 import "react-toastify/dist/ReactToastify.min.css"
 import {GDialogDelete} from "./components/dialogs/GDialogDelete"
 import {GDialogAddUpdateForm} from "./components/dialogs/GDialogAddUpdateForm"
+import axios from "axios"
+
+axios.defaults.baseURL = 'https://python-flask-2-ginwa.herokuapp.com';
+
+
+axios.interceptors.request.use(request => {
+  // console.log(request);
+  return request;
+}, error => {
+  // console.log(error)
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use(response => {
+  console.log(response);
+  // Edit response config
+  return response;
+}, error => {
+  // console.log(error);
+  return Promise.reject(error);
+});
 
 ReactDOM.render(
         <React.StrictMode>
