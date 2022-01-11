@@ -1,20 +1,22 @@
 #################### Database CRUD Implementation ######################
-class Model():
-    database = {}
-    
-    def __init__(self, database={}):
-        self.database = database
+from main import db, ma
 
 
+class Model(db.Model):
+    key = db.Column(db.String, primary_key=True)
+    firstName = db.Column(db.String(255))
+    lastName = db.Column(db.String(255))
 
 
     ############################ create item ###########################
     def create(self, key, value):
+        new_user = Model(key=key, firstName=value["firstName"], lastName=value["lastName"])
         # key = "1"
           # value = {"firstName": "John, "lastName": "Doe"}
         # return = True
         #          False
-        if key in self.database:
+        isUserExist = Model.query.filter(Model.key == key).one_or_none()
+        if isUserExist:
             return False
         # invalid value
         try:
@@ -24,17 +26,19 @@ class Model():
         except KeyError:
             return False
         # succeed
-        self.database[key] = value
+        db.session.add(new_user)
+        db.session.commit()
         return True
 
 
     ############################ read item ###########################
     def read(self, key):
+        user = Model.query.filter(Model.key == key).one_or_none()
         # key = "1"
         # reutrn value = {"firstName": "John", "lastName": "Doe"}
         #                None
-        if key in self.database:
-            return self.database[key]
+        if user:
+            return user
         else:
             return None
 
@@ -51,14 +55,18 @@ class Model():
                     and len(value["lastName"]) == 0):
                 return False
             # not found
-            if (key not in self.database):
+            isUserExist = Model.query.filter(Model.key == key).one_or_none()
+            if not isUserExist:
                 return False
         # invalid value
         except KeyError:
             print("key error")
             return False
         # succeed
-        self.database[key] = value
+        updated_user = Model(key=key, firstName=value["firstName"], lastName=value["lastName"])
+        db.session.merge(updated_user)
+        db.session.commit()
+        # self.database[key] = value
         return True
 
 
@@ -67,28 +75,25 @@ class Model():
         # key = "1"
         # return = True 
         #          False
-        if key not in self.database:
+        isUserExist = Model.query.filter(Model.key == key).one_or_none()
+        if not isUserExist:
             return False
         # succeed
-        del self.database[key]
+        # del self.database[key]
+        db.session.delete(isUserExist)
+        db.session.commit()
         return True
 
 
     ############################ debug method ###########################
     def debug(self):
+        users = Model.query.all()
         # return = database if implemented
         #          None if not implemented
-        return self.database
+        return users
 
 
-############################ Test Function #############################
-if __name__ == "__main__":
-    model = Model({
-            "1": {"firstName": "John", "lastName": "Doe"},
-            "5": {"firstName": "Strong", "lastName": "Dinosaur"},
-            "12": {"firstName": "Black", "lastName": "Cat"}
-            })
-    print(model.create("7",{"firstName": "John", "lastName": "Doe"}))
-    print(model.database)
-    print(model.create("7",{"firstName": "John", "lastName": "Doe"}))
-    print(model.database)
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Model
+        load_instance = True

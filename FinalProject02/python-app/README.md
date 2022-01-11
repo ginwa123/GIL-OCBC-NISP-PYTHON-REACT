@@ -9,7 +9,7 @@ THe backend uses [Model](./dbms) to implement [API](../docs), have a look at [ma
 ```shell
 python3 -m venv python_modules          # create python environment
 source ./python_modules/bin/activate    # activate python environment
-python3 -m pip install -r package-lock.txt   # install python modules from package.txt
+python3 -m pip install -r requirements.txt   # install python modules from requirements.txt
 deactivate                              # deactivate python environment
 ```
 
@@ -23,7 +23,7 @@ ppm install
 
 ```shell 
 source ./python_modules/bin/activate    # activate python environment
-python main.py                          # run back-end server
+python run.py                           # run back-end server
 deactivate                              # deactivate python environment
 ```
 (no available for Windows)**
@@ -37,7 +37,7 @@ ppm start
 ```shell
 source ./python_modules/bin/activate    # activate python environment
 pip install new-package				# install new-package
-python -m pip freeze > package-lock.txt		# save new-package to package.txt
+python -m pip freeze > requirements.txt		# save new-package to requirements.txt
 deactivate                              # deactivate python environment
 ```
 (no available for Windows)**
@@ -60,7 +60,7 @@ cd backend
 python3 -m venv python_modules          # create python environment
 source ./python_modules/bin/activate    # activate python environment
 pip install flask flask-cors     		# install essitial modules
-python -m pip freeze > package-lock.txt		# save dependencies to package.txt
+python -m pip freeze > requirements.txt		# save dependencies to package.txt
 deactivate                              # deactivate python environment
 ```
 (no available for Windows)**
