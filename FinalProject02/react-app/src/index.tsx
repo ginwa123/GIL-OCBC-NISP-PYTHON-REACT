@@ -14,8 +14,8 @@ ReactDOM.render(
           <Provider store={store}>
             <BrowserRouter>
               <Routes>
-                <Route path="">
-                  <Route path="home" element={<App/>}>
+                <Route path="/home">
+                  <Route path="" element={<App/>}>
                     <Route path="dialog">
                       <Route path="delete">
                         <Route path="batch">
