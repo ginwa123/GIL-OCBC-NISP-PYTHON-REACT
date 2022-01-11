@@ -9,24 +9,24 @@ import "react-toastify/dist/ReactToastify.min.css"
 import {GDialogDelete} from "./components/dialogs/GDialogDelete"
 import {GDialogAddUpdateForm} from "./components/dialogs/GDialogAddUpdateForm"
 import axios from "axios"
+import {sActionLoading} from "./g-store/loading/reducer"
 
-axios.defaults.baseURL = 'https://python-flask-2-ginwa.herokuapp.com';
+axios.defaults.baseURL = "http://localhost:5000/"
 
 
 axios.interceptors.request.use(request => {
-  // console.log(request);
+  store.dispatch(sActionLoading.setIsLoading(true))
   return request;
 }, error => {
-  // console.log(error)
+  store.dispatch(sActionLoading.setIsLoading(false))
   return Promise.reject(error);
 });
 
 axios.interceptors.response.use(response => {
-  console.log(response);
-  // Edit response config
+  store.dispatch(sActionLoading.setIsLoading(false))
   return response;
 }, error => {
-  // console.log(error);
+  store.dispatch(sActionLoading.setIsLoading(false))
   return Promise.reject(error);
 });
 

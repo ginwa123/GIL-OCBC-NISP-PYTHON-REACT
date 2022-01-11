@@ -23,12 +23,12 @@ export const GTable = () => {
     sDispatch(sFetchUserInDebug())
 
     // always fetch users every 10 sec
-    const timerId = setInterval(args => {
-      sDispatch(sFetchUserInDebug())
-    }, 10000)
-    return () => {
-      clearInterval(timerId)
-    }
+    // const timerId = setInterval(args => {
+    //   sDispatch(sFetchUserInDebug())
+    // }, 20000)
+    // return () => {
+    //   clearInterval(timerId)
+    // }
   }, [])
 
 

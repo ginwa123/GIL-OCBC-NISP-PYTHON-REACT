@@ -7,10 +7,10 @@ export const sFetchUserInDebug = createAsyncThunk(
         "users/debug",
         async (_, thunkAPI) => {
           // thunkAPI.dispatch(sActionUser.reset())
-          toast.info("Fetching users",)
+          // toast.info("Fetching users",)
           return await axios.get("/debug")
                   .then(response => {
-                    toast.success("Success fetching users",)
+                    // toast.success("Success fetching users",)
                     return response.data as User
                   })
                   .catch(error => {
