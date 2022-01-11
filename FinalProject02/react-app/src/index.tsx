@@ -11,7 +11,7 @@ import {GDialogAddUpdateForm} from "./components/dialogs/GDialogAddUpdateForm"
 import axios from "axios"
 import {sActionLoading} from "./g-store/loading/reducer"
 
-axios.defaults.baseURL = "http://localhost:5000/"
+axios.defaults.baseURL = "https://python-flask-2-ginwa.herokuapp.com/"
 
 
 axios.interceptors.request.use(request => {
