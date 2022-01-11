@@ -73,7 +73,9 @@ export const GTable = () => {
                         //   bgcolor: (theme) =>
                         //           alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
                         // }),
-                        bgcolor: (theme) => "#81ac8d",
+                        bgcolor: (theme) => {
+                          return theme.palette.secondary.main
+                        },
                       }}
               >
                 <Typography

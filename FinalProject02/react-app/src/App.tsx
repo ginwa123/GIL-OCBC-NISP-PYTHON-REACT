@@ -1,16 +1,18 @@
 import React from "react"
-import "./App.css"
 import {Outlet} from "react-router-dom"
 import {GHome} from "./pages/GHome"
 import {ToastContainer} from "react-toastify"
-import {ThemeProvider} from "@mui/material"
-import theme from "./custom-theme"
+import {CssBaseline, ThemeProvider} from "@mui/material"
+import {darkTheme, lightTheme} from "./custom-theme"
+import {useAppSelector} from "./g-store/hooks"
 
 function App() {
+  const sThemeSelector = useAppSelector(state => state.themeReducer)
 
   return (
           <>
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={sThemeSelector.isLight ? lightTheme : darkTheme}>
+              <CssBaseline/>
               <ToastContainer
                       position="top-right"
                       newestOnTop={false}

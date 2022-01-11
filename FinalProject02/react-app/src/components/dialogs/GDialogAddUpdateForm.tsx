@@ -32,7 +32,7 @@ export const GDialogAddUpdateForm = () => {
   const sAppSelector: User[] = useAppSelector(state => state.usersReducer).data
   const [sOpen, setOpen] = useState(true)
 
-  const handleCloseDialog = () =>{
+  const handleCloseDialog = () => {
     setOpen(false)
     setTimeout(args => {
       sNavigate("/home")

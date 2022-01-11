@@ -1,23 +1,59 @@
-import {createTheme} from "@mui/material/styles"
-import {green} from "@mui/material/colors"
+// noinspection ES6UnusedImports
 
-const theme = createTheme({
+import {createTheme, Theme} from "@mui/material/styles"
+import {lightGreen} from "@mui/material/colors"
+import type {} from '@mui/x-data-grid/themeAugmentation';
+export const lightTheme: Theme = createTheme({
   palette: {
+    mode : "light",
+    primary: lightGreen,
+    secondary: {
+      main: "#388e3c"
+    },
+  },
+  components: {
+    MuiToolbar: {
+      styleOverrides: {
+        // color : "#aed581"
+      }
+    }
+  }
+
+
+})
+
+export const darkTheme: Theme = createTheme({
+  palette: {
+    mode : "dark",
     primary: {
-      main: green[500],
+      main: "#0d47a1",
     },
     secondary: {
-      main: "#82b1ff",
+      main: "#00838f",
     },
+    background: {
+      default: "#000000",
+      paper: "#000000"
+    },
+
 
   },
   components: {
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#383838",
+        },
+      }
+    },
     MuiAppBar: {
-      styleOverrides: {},
-      defaultProps: {}
-
+      styleOverrides:{
+        root: {
+          backgroundColor :"#0d47a1"
+        }
+      }
     }
   }
 })
 
-export default theme
+

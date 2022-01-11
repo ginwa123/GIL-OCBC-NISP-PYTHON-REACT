@@ -54,7 +54,7 @@ export const GDialogDelete = () => {
     handleCloseDialog()
   }
 
-  const handleCloseDialog = () =>{
+  const handleCloseDialog = () => {
     setOpen(false)
     setTimeout(args => {
       sNavigate("/home")

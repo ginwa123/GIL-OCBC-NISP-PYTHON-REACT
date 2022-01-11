@@ -16,7 +16,7 @@ export const GHome = () => {
           <>
             <GAppBar/>
             <Container maxWidth="md" sx={{
-              marginTop: 10
+              marginTop: 10,
             }}>
               <GTable/>
             </Container>

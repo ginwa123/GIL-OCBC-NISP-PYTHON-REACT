@@ -43,4 +43,3 @@ export const userSlice = createSlice({
   },
 })
 
-export const sActionUser = userSlice.actions
