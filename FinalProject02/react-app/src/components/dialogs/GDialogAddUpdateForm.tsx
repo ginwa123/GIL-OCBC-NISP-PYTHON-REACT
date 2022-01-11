@@ -28,8 +28,16 @@ export const GDialogAddUpdateForm = () => {
       message: "Required"
     }
   })
-  const sParams: Readonly<Params<string>> = useParams()
+  const sParams: Readonly<Params> = useParams()
   const sAppSelector: User[] = useAppSelector(state => state.usersReducer).data
+  const [sOpen, setOpen] = useState(true)
+
+  const handleCloseDialog = () =>{
+    setOpen(false)
+    setTimeout(args => {
+      sNavigate("/home")
+    }, 100)
+  }
 
   useEffect(() => {
     if (sParams.mode === "edit") {
@@ -74,7 +82,7 @@ export const GDialogAddUpdateForm = () => {
       if (isValidName(sForm.firstName) && isValidName(sForm.lastName)) {
         if (sParams.mode === "add") sDispatch(sAddUser(sForm))
         else sDispatch(sEditUser({key: sParams.key, form: sForm}))
-        sNavigate("/home")
+        handleCloseDialog()
       }
     }
   }
@@ -127,12 +135,12 @@ export const GDialogAddUpdateForm = () => {
   const GButton = () => {
     if (sParams.mode === "add") {
       return (<>
-        <Button onClick={() => sNavigate("/home")}>Cancel</Button>
+        <Button onClick={handleCloseDialog}>Cancel</Button>
         <Button onClick={handleClickAddOrUpdate}>Add Now</Button>
       </>)
     } else {
       return (<>
-        <Button onClick={() => sNavigate("/home")}>Cancel</Button>
+        <Button onClick={handleCloseDialog}>Cancel</Button>
         <Button onClick={handleClickAddOrUpdate}>Update Now</Button>
       </>)
     }
@@ -140,7 +148,7 @@ export const GDialogAddUpdateForm = () => {
 
   return (
           <>
-            <Dialog open={true} maxWidth="md">
+            <Dialog open={sOpen} maxWidth="md">
               <DialogTitle>{sParams.mode?.toUpperCase()}</DialogTitle>
               <DialogContent>
                 <Grid container spacing={2} sx={{marginTop: 1}}>

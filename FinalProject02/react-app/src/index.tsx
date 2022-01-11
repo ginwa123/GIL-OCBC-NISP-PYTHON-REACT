@@ -14,15 +14,14 @@ ReactDOM.render(
           <Provider store={store}>
             <BrowserRouter>
               <Routes>
-                <Route path="/home">
-                  <Route path="" element={<App/>}>
+                <Route path="">
+                  <Route path="home" element={<App/>}>
                     <Route path="dialog">
                       <Route path="delete">
                         <Route path="batch">
                           <Route path=":batch_key" element={<GDialogDelete/>}/>
                         </Route>
                         <Route path=":key" element={<GDialogDelete/>}/>
-
                       </Route>
                       <Route path=":mode" element={<GDialogAddUpdateForm/>}>
                         <Route path=":key" element={<GDialogAddUpdateForm/>}/>

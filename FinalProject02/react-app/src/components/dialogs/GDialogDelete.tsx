@@ -16,6 +16,7 @@ export const GDialogDelete = () => {
   const sDefaultData: User = {key: "", firstName: "", lastName: ""}
   const [sData, setData] = useState<User>(sDefaultData)
   const sAppSelector: User[] = useAppSelector(state => state.usersReducer).data
+  const [sOpen, setOpen] = useState(true)
 
   useEffect(() => {
     if (sParams.key) {
@@ -50,13 +51,20 @@ export const GDialogDelete = () => {
         }))
       })
     }
-    sNavigate("/home")
+    handleCloseDialog()
+  }
+
+  const handleCloseDialog = () =>{
+    setOpen(false)
+    setTimeout(args => {
+      sNavigate("/home")
+    }, 100)
   }
 
   return (
           <>
             <Dialog
-                    open={true}
+                    open={sOpen}
             >
               <DialogTitle>
                 DELETE
@@ -71,7 +79,7 @@ export const GDialogDelete = () => {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => sNavigate("/home")}>Cancel</Button>
+                <Button onClick={handleCloseDialog}>Cancel</Button>
                 <Button onClick={handleDeleteClick} autoFocus>
                   Delete Now
                 </Button>
