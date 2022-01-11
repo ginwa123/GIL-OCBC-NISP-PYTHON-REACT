@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit"
-import {sFetchUserInDebug} from "./action-async"
+import {sAddUser, sDeleteUser, sEditUser, sFetchUserInDebug} from "./action-async"
 
 export interface User {
   key: string
@@ -7,8 +7,10 @@ export interface User {
   lastName: string
 }
 
+const initialState = {
+  data: [] as User[],
+}
 
-const initialState: User[] = []
 export const userSlice = createSlice({
   name: "users",
   initialState,
@@ -16,7 +18,7 @@ export const userSlice = createSlice({
     reset: () => initialState
   },
   extraReducers: (builder) => {
-    builder.addCase(sFetchUserInDebug.fulfilled, (state: User[], {payload}) => {
+    builder.addCase(sFetchUserInDebug.fulfilled, (state, {payload}) => {
       const newData: User[] = []
       for (let [key, value] of Object.entries(payload)) {
         newData.push({
@@ -25,7 +27,18 @@ export const userSlice = createSlice({
           lastName: value.lastName
         })
       }
-      state.push(...newData)
+      state.data = newData
+    })
+    builder.addCase(sAddUser.fulfilled, (state, {payload}) => {
+      state.data.push(payload)
+    })
+    builder.addCase(sEditUser.fulfilled, (state, {payload}) => {
+      const userIndex = state.data.findIndex(value => value.key === payload.key)
+      state.data.splice(userIndex, 1, payload as User)
+    })
+    builder.addCase(sDeleteUser.fulfilled, (state, {payload}) => {
+      const deletedUserIndex = state.data.findIndex(value => value.key === payload.key)
+      state.data.splice(deletedUserIndex, 1)
     })
   },
 })
