@@ -64,7 +64,7 @@ export const GTable = () => {
 
   return (
           <>
-            <div style={{height: 500, width: "100%"}}>
+            <div style={{height: 450, width: "100%"}}>
               <Toolbar
                       sx={{
                         pl: {sm: 2},
@@ -97,7 +97,7 @@ export const GTable = () => {
               <DataGrid
                       rows={sAppSelector}
                       columns={columns}
-                      pageSize={11}
+                      pageSize={10}
                       getRowId={(row) => row.key}
                       density="compact"
                       checkboxSelection
