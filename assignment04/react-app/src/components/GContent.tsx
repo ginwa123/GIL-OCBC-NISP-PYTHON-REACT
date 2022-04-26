@@ -11,7 +11,7 @@ interface Article {
 }
 
 export const GContent = () => {
-  const [sArticles, setArticles] = useState<Article[]>([])
+  const [sArticles, setArticles] = useState<Article[]>()
   useEffect(() => {
     fetch("/articles")
       .then((response) => response.json())
@@ -23,7 +23,7 @@ export const GContent = () => {
     }
   }, [])
 
-  const myArticles = () => sArticles.map((article) => (
+  const myArticles = () => sArticles?.map((article) => (
     <Box key={article.id}>
       <Card sx={{borderRadius: 8, padding: 3}} variant="outlined">
         <CardContent>

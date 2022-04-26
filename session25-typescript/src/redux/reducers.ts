@@ -13,6 +13,11 @@ export const abcReducer = (state = initialState, action: any) => {
       ...state, counter: state.counter + action.payload
     }
   }
+  else if (action.type === "DECREMENT") {
+    return {
+      ...state, counter: state.counter - action.payload
+    }
+  }
   return state
 }
 

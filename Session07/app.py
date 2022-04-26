@@ -16,7 +16,6 @@ app = Flask(__name__, template_folder="templates")
 # @app.route('/hello_world')
 # def hello_world():
 # 	return 'Hello, World!'
-
 users_dummy = [
 	{
 		"id": 1,

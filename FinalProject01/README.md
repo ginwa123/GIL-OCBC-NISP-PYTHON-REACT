@@ -15,3 +15,8 @@
 4. Push this project to heroku app
 5. Create database in cli `heroku flask db upgrade`
 6. Enjoy
+
+### Improvements
+1. Update swagger 2.0 to open api 3.0
+2. Read Director with params: page, item per_page, search_keyword,
+3. Read Movies with params: page, item per_page, search, order_by

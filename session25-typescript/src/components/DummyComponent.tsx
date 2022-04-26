@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux"
-import {addIncrement} from "../redux/actions"
+import {addDecrement, addIncrement} from "../redux/actions"
 import {INCREMENT} from "../redux/action-types"
 import {useAppDispatch, useAppSelector} from "../hooks"
 import {useEffect} from "react"
@@ -8,7 +8,7 @@ export const DummyComponent = () => {
   const dispatch = useAppDispatch()
   const incrementSelector = useAppSelector(state => state.counter)
   const handleClick = () => {
-    dispatch(addIncrement())
+
   }
 
   useEffect(() => {
@@ -17,8 +17,15 @@ export const DummyComponent = () => {
 
   return (
           <>
-            <button onClick={handleClick}>Click Me</button>
-            {incrementSelector}
+            <div>
+              <button onClick={() =>  dispatch(addIncrement())}>INCREMENT</button>
+              <button onClick={() =>  dispatch(addDecrement())}>DECREMENT</button>
+            </div>
+            <div>
+              {incrementSelector}
+            </div>
+
+
           </>
   )
 }

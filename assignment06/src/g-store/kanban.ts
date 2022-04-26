@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, current} from "@reduxjs/toolkit"
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 import {toast} from "react-toastify"
 
 
@@ -111,7 +111,7 @@ export const kanbanSlice = createSlice({
       // find hexcolor
       const hexColor = rKanbanColor.find(value => value.name === action.payload.hexColor)
 
-      const copyState = [...current(state) as Kanban[]]
+      const copyState = [...state as Kanban[]]
 
       // get latest index kanbans
       let latestIndex = 0
@@ -128,7 +128,7 @@ export const kanbanSlice = createSlice({
     },
 
     changeKanbanStatus: (state, action) => {
-      const copyState = [...current(state) as Kanban[]]
+      const copyState = [...state as Kanban[]]
 
 
       // delete old kaban
@@ -149,7 +149,7 @@ export const kanbanSlice = createSlice({
     },
 
     editKanbanItem: (state, action) => {
-      const copyState = [...current(state) as Kanban[]]
+      const copyState = [...state as Kanban[]]
 
       // find hexcolor
       const hexColor = rKanbanColor.find(value => value.name === action.payload.hexColor)
@@ -167,7 +167,7 @@ export const kanbanSlice = createSlice({
     },
 
     deleteKanbanItem: ((state, action) => {
-      let copyState = [...current(state) as Kanban[]]
+      let copyState = [...state as Kanban[]]
       copyState = copyState.filter(value => value.index.toString() !== action.payload.index)
       return copyState
     }),
@@ -181,20 +181,20 @@ export const kanbanSlice = createSlice({
       if (statusSource === statusDestination) {
         // vertical reorder
         // a: all kaban excep droppableIdSource
-        let copyState1 = [...current(state) as Kanban[]]
+        let copyState1 = [...state as Kanban[]]
         copyState1 = copyState1.filter(value => value.status === statusSource)
         // replace destination with source
         const [removed] = copyState1.splice(indexSource, 1)
         copyState1.splice(indexDestination, 0, removed)
 
         // b: all kaban except a
-        let copyState2 = [...current(state) as Kanban[]]
+        let copyState2 = [...state as Kanban[]]
         copyState2 = copyState2.filter(value => value.status !== statusDestination)
 
         return [...copyState1, ...copyState2]
       }
       // horizontal reorder
-      const copyState = [...current(state) as Kanban[]]
+      const copyState = [...state as Kanban[]]
 
       // a. kanbans sources
       let kanbanSourcesState = [...copyState.filter(value =>
@@ -216,7 +216,7 @@ export const kanbanSlice = createSlice({
       // d. insert a. new kanban source into index destination
       kanbanDestinationsState.splice(indexDestination, 0, kanbanSource)
 
-      // e. kanbans sources except a and b
+      // e. kanbans sources except a and c
       const exceptSourceAndDestinationState = [...copyState.filter(value =>
               (value.status !== statusSource && value.status !== statusDestination))]
 

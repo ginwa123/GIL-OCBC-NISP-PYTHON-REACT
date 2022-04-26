@@ -10,7 +10,7 @@
     - Learn python function, anonymous function, arguments, docstring, returns statement
   - Session 4
     - Learn python files and exception
-- Day 3 
+- Day 3
   - Session 5
     - Learn python OOP
   - Session 6
@@ -42,4 +42,4 @@
   - Session 18
     - Introduction React
   - Session 19
-    - Learn Data flow in react, states, props and atomic design 
+    - Learn Data flow in react, states, props and atomic design
